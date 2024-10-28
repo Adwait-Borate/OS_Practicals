@@ -5,9 +5,24 @@ struct Process {
     int id, arrival, burst, remaining, completion, wait, turnaround;
 };
 
+void print_gantt_chart(int gantt_chart[], int gantt_count) {
+    printf("\nGantt Chart:\n|");
+    for (int i = 0; i < gantt_count; i++) {
+        printf(" P%d |", gantt_chart[i]);
+    }
+    printf("\n");
+    printf("0");  // Start time
+    for (int i = 1; i <= gantt_count; i++) {
+        printf("  %d", i);  // Time labels under each process
+    }
+    printf("\n");
+}
+
 void SJF_Preemptive(struct Process p[], int n) {
     int time = 0, completed = 0, shortest;
     float total_wait = 0, total_turnaround = 0;
+    int gantt_chart[1000];  // Gantt chart log for SJF
+    int gantt_count = 0;
 
     while (completed < n) {
         shortest = -1;
@@ -20,6 +35,7 @@ void SJF_Preemptive(struct Process p[], int n) {
         if (shortest == -1) { time++; continue; }
 
         p[shortest].remaining--;
+        gantt_chart[gantt_count++] = p[shortest].id; // Record for Gantt chart
         time++;
 
         if (p[shortest].remaining == 0) {
@@ -37,11 +53,14 @@ void SJF_Preemptive(struct Process p[], int n) {
         printf("%d\t%d\t%d\t%d\t%d\t%d\n", p[i].id, p[i].arrival, p[i].burst, p[i].completion, p[i].wait, p[i].turnaround);
 
     printf("Avg Wait Time: %.2f, Avg Turnaround Time: %.2f\n", total_wait / n, total_turnaround / n);
+    print_gantt_chart(gantt_chart, gantt_count);
 }
 
 void RoundRobin(struct Process p[], int n, int quantum) {
     int time = 0, completed = 0;
     float total_wait = 0, total_turnaround = 0;
+    int gantt_chart[1000];  // Gantt chart log for Round Robin
+    int gantt_count = 0;
 
     while (completed < n) {
         bool idle = true;
@@ -49,9 +68,14 @@ void RoundRobin(struct Process p[], int n, int quantum) {
             if (p[i].arrival <= time && p[i].remaining > 0) {
                 idle = false;
                 int exec_time = (p[i].remaining > quantum) ? quantum : p[i].remaining;
+                
+                for (int j = 0; j < exec_time; j++) {
+                    gantt_chart[gantt_count++] = p[i].id; // Record for Gantt chart
+                }
+
                 time += exec_time;
                 p[i].remaining -= exec_time;
-
+                
                 if (p[i].remaining == 0) {
                     p[i].completion = time;
                     p[i].turnaround = time - p[i].arrival;
@@ -62,7 +86,10 @@ void RoundRobin(struct Process p[], int n, int quantum) {
                 }
             }
         }
-        if (idle) time++;
+        if (idle) {
+            gantt_chart[gantt_count++] = -1; // Mark idle time in Gantt chart
+            time++;
+        }
     }
 
     printf("\nRound Robin:\nPID\tArr\tBurst\tComp\tWait\tTurn\n");
@@ -70,6 +97,7 @@ void RoundRobin(struct Process p[], int n, int quantum) {
         printf("%d\t%d\t%d\t%d\t%d\t%d\n", p[i].id, p[i].arrival, p[i].burst, p[i].completion, p[i].wait, p[i].turnaround);
 
     printf("Avg Wait Time: %.2f, Avg Turnaround Time: %.2f\n", total_wait / n, total_turnaround / n);
+    print_gantt_chart(gantt_chart, gantt_count);
 }
 
 int main() {
