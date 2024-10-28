@@ -10,6 +10,7 @@ B. Write a program to implement an address book with options given below:
     d) Delete a record.
     e) Modify a record.
     f) Exit
+
 2	Assignment No. 2	Process control system calls: The demonstration of FORK, EXECVE and WAITsystem calls along with zombie and orphan states.
 A. Implement the C program in which main program accepts the integers to be sorted. Main programuses the FORK system call to create a new process called a child process. Parent process sorts the integers using sorting algorithm and waits for child process using WAIT system call to sort the integersusing any sorting algorithm. Also demonstrate zombie and orphan states.
 B. Implement the C program in which main program accepts an array. Main program uses the FORK system call to create a new process called a child process. Parent process sorts an array and passes the sorted array to child process through the command line arguments of EXECVE system call. The child process uses EXECVE system call to load new program which display array in reverse order.
