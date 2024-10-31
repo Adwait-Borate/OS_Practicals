@@ -11,7 +11,7 @@ int main() {
     printf("Enter the total Number of resources of each type (A,B,C): ");
     scanf("%d %d %d", &A, &B, &C);
 
-    int allocate[MAX_PROCESSES][MAX_RESOURCES] = {0};
+    int allocate[MAX_PROCESSES][MAX_RESOURCES] = {0};                                //allocate
     printf("Enter Allocated resources: \n");
     for (int i = 0; i < n; i++) {
         printf("Enter the allocated resources for P%d\n", i + 1);
@@ -20,8 +20,8 @@ int main() {
         }
     }
 
-    int maxreq[MAX_PROCESSES][MAX_RESOURCES] = {0};
-    printf("Enter Maximum Required resources: \n");
+    int maxreq[MAX_PROCESSES][MAX_RESOURCES] = {0};                                   //maxreq
+    printf("Enter Maximum Required resources: \n"); 
     for (int i = 0; i < n; i++) {
         printf("Enter the required resources for P%d\n", i + 1);
         for (int j = 0; j < MAX_RESOURCES; j++) {
@@ -32,8 +32,8 @@ int main() {
     printf("Enter Currently Available resources of each type(A,B,C)\n");
     int ava, avb, avc;
     scanf("%d %d %d", &ava, &avb, &avc);
-
-    int needed[MAX_PROCESSES][MAX_RESOURCES] = {0};
+ 
+    int needed[MAX_PROCESSES][MAX_RESOURCES] = {0};                                   //needed  
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < MAX_RESOURCES; j++) {
             needed[i][j] = maxreq[i][j] - allocate[i][j];
@@ -82,7 +82,7 @@ int main() {
                 (needed[i][1] <= avb && needed[i][1] != -1) &&
                 (needed[i][2] <= avc && needed[i][2] != -1)) {
                 completed++;
-                processes[completed - 1] = i + 1;
+                processes[completed - 1] = i + 1;                        // @Adwait-Borate
                 ava += allocate[i][0];
                 avb += allocate[i][1];
                 avc += allocate[i][2];

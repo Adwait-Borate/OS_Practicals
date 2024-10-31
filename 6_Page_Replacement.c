@@ -5,23 +5,23 @@
 //if all pages are used in future, replace the page which is used first
 void fifo(int pages[], int n, int capacity) {
     int frame[capacity], index = 0, faults = 0;
-    for (int i = 0; i < capacity; i++) frame[i] = -1;
+    for (int i = 0; i < capacity; i++) frame[i] = -1;    //@Adwait-Borate 
 
     for (int i = 0; i < n; i++) {
         int found = 0;
         for (int j = 0; j < capacity; j++) {
-            if (frame[j] == pages[i]) {
+            if (frame[j] == pages[i]) {                  //@Adwait-Borate 
                 found = 1;
                 break;
             }
         }
         if (!found) {
             frame[index] = pages[i];
-            index = (index + 1) % capacity;
+            index = (index + 1) % capacity;             //@Adwait-Borate  
             faults++;
         }
         printf("Frame: ");
-        for (int j = 0; j < capacity; j++) printf("%d ", frame[j]);
+        for (int j = 0; j < capacity; j++) printf("%d ", &frame[j]);
         printf("\n");
     }
     printf("Total Page Faults (FIFO): %d\n", faults);
@@ -80,15 +80,15 @@ void optimal(int pages[], int n, int capacity) {
                 for (k = i + 1; k < n; k++) {
                     if (frame[j] == pages[k]) break;
                 }
-                if (k == n) {
+                if (k == n) {                                             //@Adwait-Borate
                     replace = j;
                     break;
-                } else if (k > farthest) {
+                } else if (k > farthest) {                                //@Adwait-Borate
                     farthest = k;
                     replace = j;
                 }
             }
-            if (replace == -1) replace = 0;
+            if (replace == -1) replace = 0;                               //@Adwait-Borate
             frame[replace] = pages[i];
             faults++;
         }
