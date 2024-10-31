@@ -37,61 +37,112 @@
 //     printf("\n");
 // }
 
-// int main() {
-//     int n;
-//     printf("Enter number of integers: ");
-//     scanf("%d", &n);
+int main() {
+    printf("PARENT: MY PID IS %d\n", getpid());
+    int n;
+    printf("Enter the size of the array: ");
+    scanf("%d", &n);
+    
+    int arr[n];
+    printf("Enter the elements of the array: ");
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &arr[i]);
+    }
 
-//     int arr[n];
-//     printf("Enter the integers: ");
-//     for (int i = 0; i < n; i++) {
-//         scanf("%d", &arr[i]);
-//     }
+    int ch;
+    printf("******************************************************\n");
+    printf("***********************MENU*************************\n");
+    printf("1. Fork system call (Quick Sort)\n");
+    printf("2. Create Orphan State.\n");
+    printf("3. Create Zombie State.\n");
+    printf("******************************************************\n");
+    printf("Enter your choice: ");
+    scanf("%d", &ch);
+    printf("FORKING...\n");
 
-//     pid_t pid = fork();                                         // @Adwait-Borate
+    pid_t p = fork();
+    switch (ch) {
+        case 1: {
+            if (p < 0) {
+                printf("FORK FAILED!\n");
+            } else if (p == 0) {
+                // Child process
+                printf("CHILD: MY PID IS %d\n", getpid());
+                printf("CHILD: MY PARENT'S PID IS %d\n", getppid());
+                quickSort(arr, 0, n - 1);
+                printf("Sorted array by Quick Sort (Child): ");
+                printArray(arr, n);
+                printf("CHILD: I am dying now.\n");
+                printf("_________________________________________________________________\n");
+            } else {
+                // Parent process
+                wait(NULL);
+                printf("PARENT: I am back.\n");
+                printf("PARENT: MY PID IS %d\n", getpid());
+                printf("PARENT: MY CHILD'S PID IS %d\n", p);
+                quickSort(arr, 0, n - 1);
+                printf("Sorted array by Quick Sort (Parent): ");
+                printArray(arr, n);
+                printf("PARENT: I am dying now.\n");
+                printf("_________________________________________________________________\n");
+            }
+            break;
+        }
+        case 2: {
+            if (p < 0) {
+                printf("FORK FAILED!\n");
+            } else if (p == 0) {
+                // Child process
+                printf("CHILD: MY PID IS %d\n", getpid());
+                printf("CHILD: MY PARENT'S PID IS %d\n", getppid());
+                printf("CHILD: I am sleeping now.\n");
+                sleep(10);
+                printf("_________________________________________________________________\n");
+                system("ps -elf | grep a.out");
+            } else {
+                // Parent process
+                printf("PARENT: I am back.\n");
+                printf("PARENT: MY PID IS %d\n", getpid());
+                printf("PARENT: MY CHILD'S PID IS %d\n", p);
+                printf("PARENT: I am dying now.\n");
+                printf("_________________________________________________________________\n");
+                system("ps -elf | grep a.out");
+                exit(0);
+            }
+            break;
+        }
+        case 3: {
+            if (p < 0) {
+                printf("FORK FAILED!\n");
+            } else if (p == 0) {
+                sleep(2);
+                // Child process
+                printf("CHILD: MY PID IS %d\n", getpid());
+                printf("CHILD: MY PARENT'S PID IS %d\n", getppid());
+                printf("CHILD: I am dying now.\n");
+                printf("_________________________________________________________________\n");
+                system("ps -elf | grep a.out");
+                exit(0);
+            } else {
+                // Parent process
+                printf("PARENT: I am back.\n");
+                printf("PARENT: MY PID IS %d\n", getpid());
+                printf("PARENT: MY CHILD'S PID IS %d\n", p);
+                printf("PARENT: I am sleeping now.\n");
+                sleep(10);
+                printf("_________________________________________________________________\n");
+                system("ps -elf | grep a.out");
+            }
+            break;
+        }
+        default: {
+            printf("Invalid choice!\n");
+            break;
+        }
+    }
 
-//     if (pid < 0) {
-//         perror("Fork failed");
-//         return 1;
-//     } else if (pid == 0) {
-//         // Child process
-//         printf("Child process started, sorting using Quick Sort...\n");
-//         quickSort(arr, 0, n - 1);
-//         printf("Child process sorted array: ");
-//         printArray(arr, n);
-//         printf("Child process exiting...\n");
-//         exit(0);
-//     } else {
-//         // Parent process
-//         printf("Parent process started, sorting using Quick Sort...\n");
-//         quickSort(arr, 0, n - 1);
-//         printf("Parent process sorted array: ");
-//         printArray(arr, n);
-
-//         // Wait for child process to complete
-//         int status;
-//         wait(&status);  // Catching the return value of wait() in status
-//         printf("Parent process detected child process completion.\n");
-
-//         // Demonstrate zombie state
-//         printf("Demonstrating zombie state. Check process list.\n");
-//         sleep(5);
-
-//         // Demonstrate orphan state
-//         if (fork() == 0) {
-//             printf("Orphan process started, parent will exit.\n");
-//             sleep(10);
-//             printf("Orphan process exiting.\n");
-//             exit(0);
-//         } else {
-//             printf("Parent process exiting, orphan process will be adopted by init.\n");
-//             exit(0);
-//         }
-//     }
-
-//     return 0;
-// }
-
+    return 0;
+}
 
 #include <stdio.h>
 #include <stdlib.h>
