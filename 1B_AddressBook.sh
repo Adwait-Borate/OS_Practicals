@@ -1,3 +1,5 @@
+
+
 #!/bin/bash
 
 createAddressBook(){
@@ -47,14 +49,14 @@ deleteRecord(){
     fi
 
     read -p "Enter Name of the record to delete: " name
-    if grep -qi "$name" Address_Book.txt; then
+    if [ grep -qi "$name" Address_Book.txt ]; then
         sed -i "/$name/Id" Address_Book.txt
         echo "Record deleted successfully."
     else
         echo "Record not found."
     fi
 }
-
+ 
 searchRecord(){
     if [ ! -e Address_Book.txt ]; then 
         echo "Address Book is not created yet. Please create the Address Book first."
@@ -78,7 +80,7 @@ updateRecord(){
 
     read -p "Enter Name of the record to update: " name
 
-    if grep -qi "$name" Address_Book.txt; then
+    if [ grep -qi "$name" Address_Book.txt ]; then
         sed -i "/$name/Id" Address_Book.txt
         read -p "Enter updated Email: " email
         read -p "Enter updated Phone Number: " phone

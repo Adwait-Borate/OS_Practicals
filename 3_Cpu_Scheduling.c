@@ -19,42 +19,46 @@ void print_gantt_chart(int gantt_chart[], int gantt_count) {
 }
 
 void SJF_Preemptive(struct Process p[], int n) {
-    int time = 0, completed = 0, shortest;
-    float total_wait = 0, total_turnaround = 0;
+    int time = 0, completed = 0, shortest; // Initialize time, completed processes count, and shortest process index
+    float total_wait = 0, total_turnaround = 0; // Initialize total wait and turnaround times
     int gantt_chart[1000];  // Gantt chart log for SJF
-    int gantt_count = 0;
+    int gantt_count = 0; // Counter for Gantt chart entries
 
-    while (completed < n) {
-        shortest = -1;
-        for (int i = 0; i < n; i++) {
+    while (completed < n) { // Loop until all processes are completed
+        shortest = -1; // Reset shortest process index
+        for (int i = 0; i < n; i++) { // Iterate through all processes
+            // Check if process has arrived, is remaining, and is shorter than the current shortest
             if (p[i].arrival <= time && p[i].remaining > 0 &&
                 (shortest == -1 || p[i].remaining < p[shortest].remaining))
-                shortest = i;
+                shortest = i; // Update the shortest process index
         }
 
-        if (shortest == -1) { time++; continue; }
+        if (shortest == -1) { time++; continue; } // If no process is available, increment time and continue
 
-        p[shortest].remaining--;
-        gantt_chart[gantt_count++] = p[shortest].id; // Record for Gantt chart
-        time++;
+        p[shortest].remaining--; // Decrement remaining time for the selected process
+        gantt_chart[gantt_count++] = p[shortest].id; // Record the process ID in the Gantt chart
+        time++; // Increment the current time
 
-        if (p[shortest].remaining == 0) {
-            completed++;
-            p[shortest].completion = time;
-            p[shortest].turnaround = time - p[shortest].arrival;
-            p[shortest].wait = p[shortest].turnaround - p[shortest].burst;
-            total_wait += p[shortest].wait;
-            total_turnaround += p[shortest].turnaround;
+        if (p[shortest].remaining == 0) { // Check if the selected process has completed
+            completed++; // Increment the completed processes count
+            p[shortest].completion = time; // Set completion time for the process
+            p[shortest].turnaround = time - p[shortest].arrival; // Calculate turnaround time
+            p[shortest].wait = p[shortest].turnaround - p[shortest].burst; // Calculate waiting time
+            total_wait += p[shortest].wait; // Accumulate total wait time
+            total_turnaround += p[shortest].turnaround; // Accumulate total turnaround time
         }
     }
 
+    // Print results
     printf("\nSJF (Preemptive):\nPID\tArr\tBurst\tComp\tWait\tTurn\n");
-    for (int i = 0; i < n; i++)
+    for (int i = 0; i < n; i++) // Iterate through all processes to display their info
         printf("%d\t%d\t%d\t%d\t%d\t%d\n", p[i].id, p[i].arrival, p[i].burst, p[i].completion, p[i].wait, p[i].turnaround);
 
+    // Print average wait and turnaround times
     printf("Avg Wait Time: %.2f, Avg Turnaround Time: %.2f\n", total_wait / n, total_turnaround / n);
-    print_gantt_chart(gantt_chart, gantt_count);
+    print_gantt_chart(gantt_chart, gantt_count); // Call function to print the Gantt chart
 }
+
 
 void RoundRobin(struct Process p[], int n, int quantum) {
     int time = 0, completed = 0;
@@ -69,12 +73,12 @@ void RoundRobin(struct Process p[], int n, int quantum) {
                 idle = false;
                 int exec_time = (p[i].remaining > quantum) ? quantum : p[i].remaining;
                 
+
+                p[i].remaining -= exec_time;
                 for (int j = 0; j < exec_time; j++) {
                     gantt_chart[gantt_count++] = p[i].id; // Record for Gantt chart
                 }
-
                 time += exec_time;
-                p[i].remaining -= exec_time;
                 
                 if (p[i].remaining == 0) {
                     p[i].completion = time;

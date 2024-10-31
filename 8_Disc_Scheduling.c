@@ -7,31 +7,6 @@
 
 #define disk_size 200
 
-void FCFS(int *tracks, int head, int n)
-{
-    int seek_time = 0;
-    int distance, curr_track;
-
-    for (int i = 0; i < n; i++)
-    {
-        curr_track = tracks[i];
-        distance = fabs(head - curr_track);
-
-        seek_time += distance;
-
-        head = curr_track;
-    }
-
-    printf("Total number of seek operations: %d\n", seek_time);
-
-    printf("Seek Sequence is\n");
-
-    for (int i = 0; i < n; i++)
-    {
-        printf("%d\n", tracks[i]);
-    }
-}
-
 void calculateDiff(int *tracks, int *dist, int n, int head)
 {
     for (int i = 0; i < n; i++)
@@ -263,10 +238,10 @@ int main()
     scanf("%d", &head);
 
     int choice, direction;
-    printf("Choose the algorithm:\n1. FCFS\n2. SSTF\n3. SCAN\n4. CLOOK\n");
+    printf("Choose the algorithm:\n1. SSTF\n2. SCAN\n3. CLOOK\n");
     scanf("%d", &choice);
 
-    if (choice == 3)
+    if (choice == 2)
     {
         printf("Enter direction (0 for left, 1 for right): ");
         scanf("%d", &direction);
@@ -275,15 +250,12 @@ int main()
     switch (choice)
     {
     case 1:
-        FCFS(tracks, head, n);
-        break;
-    case 2:
         SSTF(tracks, head, n);
         break;
-    case 3:
+    case 2:
         SCAN(tracks, head, n, direction);
         break;
-    case 4:
+    case 3:
         CLOOK(tracks, head, n);
         break;
     default:

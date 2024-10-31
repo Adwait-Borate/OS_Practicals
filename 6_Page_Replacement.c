@@ -14,8 +14,8 @@ void fifo(int pages[], int n, int capacity) {
                 found = 1;
                 break;
             }
-        }
-        if (!found) {
+        }  
+        if (!found) { 
             frame[index] = pages[i];
             index = (index + 1) % capacity;             //@Adwait-Borate  
             faults++;
@@ -39,16 +39,16 @@ void lru(int pages[], int n, int capacity) {
         for (int j = 0; j < capacity; j++) {
             if (frame[j] == pages[i]) {
                 found = 1;
-                time[j] = ++counter;
+                time[j] = ++counter;                                                   //@Adwait-Borate
                 break;
             }
         }
         if (!found) {
             for (int j = 1; j < capacity; j++) {
-                if (time[j] < time[least]) least = j;
+                if (time[j] < time[least]) least = j;                                   //@Adwait-Borate
             }
             frame[least] = pages[i];
-            time[least] = ++counter;
+            time[least] = ++counter;                                                    //Adwait-Borate
             faults++;
         }
         printf("Frame: ");
@@ -69,7 +69,7 @@ void optimal(int pages[], int n, int capacity) {
         int found = 0;
         for (int j = 0; j < capacity; j++) {
             if (frame[j] == pages[i]) {
-                found = 1;
+                found = 1;  
                 break;
             }
         }
