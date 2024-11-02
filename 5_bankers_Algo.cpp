@@ -99,3 +99,121 @@ int main() {
 
     return 0;
 }
+ /*
+ 
+ ---------------------------------------------------------------------------------------------------------------------
+                                         ANOTHER APPROACH 
+
+
+
+#include <iostream>
+#include <vector>
+
+#define MAX_PROCESSES 5
+#define MAX_RESOURCES 3
+
+using namespace std;
+
+int main() {
+    int n = MAX_PROCESSES; // Fixed number of processes
+    int A, B, C;           // Total resources
+
+    cout << "Enter the total Number of resources of each type (A,B,C): ";
+    cin >> A >> B >> C;
+
+    vector<vector<int>> allocate(MAX_PROCESSES, vector<int>(MAX_RESOURCES, 0)); // allocate
+    cout << "Enter Allocated resources: \n";
+    for (int i = 0; i < n; i++) {
+        cout << "Enter the allocated resources for P" << i + 1 << "\n";
+        for (int j = 0; j < MAX_RESOURCES; j++) {
+            cin >> allocate[i][j];
+        }
+    }
+
+    vector<vector<int>> maxreq(MAX_PROCESSES, vector<int>(MAX_RESOURCES, 0)); // maxreq
+    cout << "Enter Maximum Required resources: \n";
+    for (int i = 0; i < n; i++) {
+        cout << "Enter the required resources for P" << i + 1 << "\n";
+        for (int j = 0; j < MAX_RESOURCES; j++) {
+            cin >> maxreq[i][j];
+        }
+    }
+
+    cout << "Enter Currently Available resources of each type(A,B,C)\n";
+    int ava, avb, avc;
+    cin >> ava >> avb >> avc;
+
+    vector<vector<int>> needed(MAX_PROCESSES, vector<int>(MAX_RESOURCES, 0)); // needed
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < MAX_RESOURCES; j++) {
+            needed[i][j] = maxreq[i][j] - allocate[i][j];
+        }
+    }
+
+    // Display the Allocation Matrix
+    cout << "\nAllocation Matrix:\n";
+    cout << "P\tA\tB\tC\n";
+    for (int i = 0; i < n; i++) {
+        cout << "P" << i + 1 << "\t";
+        for (int j = 0; j < MAX_RESOURCES; j++) {
+            cout << allocate[i][j] << "\t";
+        }
+        cout << "\n";
+    }
+
+    // Display the Maximum Resources Matrix
+    cout << "\nMaximum Resources Matrix:\n";
+    cout << "P\tA\tB\tC\n";
+    for (int i = 0; i < n; i++) {
+        cout << "P" << i + 1 << "\t";
+        for (int j = 0; j < MAX_RESOURCES; j++) {
+            cout << maxreq[i][j] << "\t";
+        }
+        cout << "\n";
+    }
+
+    // Display the Need Matrix
+    cout << "\nNeed Matrix:\n";
+    cout << "P\tA\tB\tC\n";
+    for (int i = 0; i < n; i++) {
+        cout << "P" << i + 1 << "\t";
+        for (int j = 0; j < MAX_RESOURCES; j++) {
+            cout << needed[i][j] << "\t";
+        }
+        cout << "\n";
+    }
+
+    vector<int> processes(MAX_PROCESSES, 0);
+    int completed = 0;
+
+    while (completed != n) {
+        for (int i = 0; i < n; i++) {
+            if ((needed[i][0] <= ava && needed[i][0] != -1) &&
+                (needed[i][1] <= avb && needed[i][1] != -1) &&
+                (needed[i][2] <= avc && needed[i][2] != -1)) {
+                completed++;
+                processes[completed - 1] = i + 1;
+                ava += allocate[i][0];
+                avb += allocate[i][1];
+                avc += allocate[i][2];
+                // Mark this process as completed by setting needed to -1
+                for (int j = 0; j < MAX_RESOURCES; j++) {
+                    needed[i][j] = -1;
+                }
+            }
+        }
+    }
+
+    // Final output
+    cout << "\n\nCurrently Available Resources: \n";
+    cout << ava << " " << avb << " " << avc << "\n";
+
+    cout << "\nThe Order Of Completion of processes is: \n";
+    for (int i = 0; i < n; i++) {
+        cout << "P" << processes[i] << "->";
+    }
+    cout << "\n";
+  
+    return 0;
+} 
+ */
