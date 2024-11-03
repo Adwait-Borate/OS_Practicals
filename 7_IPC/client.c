@@ -17,7 +17,5 @@ int main() {
     // Detach from shared memory
     shmdt(str);
 
-    // Optionally, you can remove the shared memory segment
-    shmctl(shmid, IPC_RMID, NULL); // Remove the shared memory segment
     return 0;
 }
