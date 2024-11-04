@@ -19,7 +19,6 @@ int main() {
     // W: Write to memory
     printf("Server: Enter a message: ");
     fgets(str, SHM_SIZE, stdin); // Read input from the user
-    str[strcspn(str, "\n")] = 0; // Remove newline character if present
     printf("Server: Message written to shared memory.\n");
 
     // D: Detach memory
