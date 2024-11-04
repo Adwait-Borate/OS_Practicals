@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <sys/ipc.h>
-#include <sys/shm.h>
+// #include <sys/ipc.h>
+// #include <sys/shm.h>
 #include <string.h>
 #define SHM_SIZE 1024 // Size of the shared memory segment
 int main() {
